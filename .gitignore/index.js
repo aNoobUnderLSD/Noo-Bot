@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const NooBot = new Discord.Client()
-const BotPfx = '!*'
+const BotPfx = '*'
 const reactPfx = '§react'
 //const meteo = require("weather-js");
 
@@ -81,7 +81,8 @@ NooBot.on('message', message =>
             .addField("*server", "Cette commande sert à connaitres les caractéristiques du server actuel")
             .addField("*bonjour", "Me dire Bonjour")
             .addField("*Bonjour `@mention`", "Dire bonjour à un membre du server par mon intermédiaire")
-            .addField("*avatar", "Pour avoir le lien de son avatar en MP")  
+            .addField("*avatar", "Pour avoir le lien de son avatar en MP") 
+            .addField("*sondage", "Pour publié ton sondage")
         message.author.send(AideEmbed).catch((err) =>
         {
             message.reply(":warning: Je peux pas t'envoyer toutes mes commands :warning:")
