@@ -16,7 +16,7 @@ NooBot.on('ready', function ()
 {
   
     console.log("NooBot is start");
-    setInterval(RdmStatus, 5000)
+    setInterval(RdmStatus, 3000)
 
 NooBot.user.setStatus('DND')
   .then(console.log(`Le status est mis à jour et je suis actuellement sur ${NooBot.guilds.size} servers`))
