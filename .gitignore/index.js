@@ -30,8 +30,7 @@ NooBot.user.setStatus('DND')
 NooBot.on("guildMemberAdd", member =>
 {   
     let consolelogadd = (`${member.guild.addMember} à rejoin ${member.guild.name}`)   
-    let WBMember = member.guild.roles.find("name", WBRole)
-
+ 
     const JoinEmbedMP = new Discord.RichEmbed()
         .setColor("#fe09d5")
         .setAuthor(member.user.username, member.user.avatarURL)
@@ -41,7 +40,7 @@ NooBot.on("guildMemberAdd", member =>
         
     
     member.send(JoinEmbedMP).catch((err) => {
-        member.client.users.get("406135526005932043").send("T'es MP sont desactiver");
+        member.guild.owner.send(`${member.nickname} viens de join`);
     console.log(consolelogadd)
     })
 
