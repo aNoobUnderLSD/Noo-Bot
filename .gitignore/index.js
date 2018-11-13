@@ -55,7 +55,7 @@ NooBot.on("message", message =>
     if(message.content.startsWith('*test'))
     {
                 
-        if(!message.member.hasPermission("ADMINISTRATOR"))
+        if(message.member.hasPermission("ADMINISTRATOR"))
         {
             if (!message.guild.member(NooBot.user).hasPermission('MANAGE_MESSAGES'))
             {
@@ -79,7 +79,7 @@ NooBot.on("message", message =>
     //anti @here
     if(message.content.startsWith('@here'))
     {
-        if(!message.member.hasPermission("ADMINISTRATOR"))
+        if(message.member.hasPermission("ADMINISTRATOR"))
         {
             if (!message.guild.member(NooBot.user).hasPermission('MANAGE_MESSAGES'))
             {
