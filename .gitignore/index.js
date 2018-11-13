@@ -51,8 +51,43 @@ NooBot.on("guildMemberAdd", member =>
 
 NooBot.on("message", message => 
 {
+    //anti @everyone
+    if(message.content.startsWith('@everyone'))
+    {
+        if (!message.guild.member(NooBot.user).hasPermission('MANAGE_MESSAGES'))
+        {
+            message.guild.owner.send(`Je n'ai pas la permission de gérer les messages sur ${message.guild.name} car ${message.author} a fait un @here`)
+        }
+        else
+        {
+            message.delete(100)
+            message.guild.owner.send(`${message.author} à fais un @everyone sur ${message.guild.name}`)
+            message.author.send(`Tu n'as pas le droit de faire des @everyone sur ${message.guild.name}`)
+            console.log(`le @everyone à été supprimer de ${message.author} sur ${message.guild.name}`)
+        }
+    }
+
+    //anti @here
+    if(message.content.startsWith('@here'))
+    {
+        if (!message.guild.member(NooBot.user).hasPermission('MANAGE_MESSAGES'))
+        {
+            message.guild.owner.send(`Je n'ai pas la permission de gérer les messages sur ${message.guild.name} car ${message.author} a fait un @here`)
+        }
+        else
+        {
+            message.delete(100)
+            message.guild.owner.send(`${message.author} à fais un @here sur ${message.guild.name}`)
+            message.author.send(`Tu n'as pas le droit de faire des @here sur ${message.guild.name}`)
+            console.log(`le @here à été supprimer de ${message.author} sur ${message.guild.name}`)
+        }
+    }
+
+    //command stats
     if (message.content.startsWith(BotPfx + 'stats'))
     {
+        if (!message.guild.member(NooBot.user).hasPermission('SEND_MESSAGES')) return message.guild.owner.send(`Je n'ai pas la permission de parler sur ${message.guild.name}`)
+        
         let StatsEmbed = new Discord.RichEmbed()
             .setTitle(`stats de : ${message.author.username}`)
             .addField(`Nombre de message envoyer sur ${message.guild.name}`, `Ton compte a été créer le ${message.author.createdAt}`, `Ton ID : ${message.author.id}`)
@@ -60,14 +95,13 @@ NooBot.on("message", message =>
         message.reply("tes stats son dans t'es MP ^^")
         message.author.send(StatsEmbed).catch((err) =>
         {
-            message.reply(":warning: Je peux pas t'envoyer toutes mes commands :warning:")
+            message.reply(":warning: Je peux pas t'envoyer toutes mes commands tu dois activé les messages privés provenant de membres de serveurs dans tes paramètres :warning:")
+            
         })
     }
-})
+
 
 //command aide
-NooBot.on('message', message =>
-{
     
     if(message.content.startsWith(BotPfx + 'aide')) 
     {
@@ -80,20 +114,18 @@ NooBot.on('message', message =>
             .addField("*server", "Cette commande sert à connaitres les caractéristiques du server actuel")
             .addField("*bonjour", "Me dire Bonjour")
             .addField("*Bonjour `@mention`", "Dire bonjour à un membre du server par mon intermédiaire")
-            .addField("*avatar", "Pour avoir le lien de son avatar en MP") 
-            .addField("*sondage", "Pour publié ton sondage")
+            .addField("*avatar", "Pour avoir le lien de son avatar en MP")  
         message.author.send(AideEmbed).catch((err) =>
         {
-            message.reply(":warning: Je peux pas t'envoyer toutes mes commands :warning:")
+            message.reply(":warning: Je peux pas t'envoyer toutes mes commands tu dois activé les messages privés provenant de membres de serveurs dans tes paramètres :warning:")
         })
         message.reply("Toutes mes commandes sont dans tes messages privée entre moi et toi ^^")
     }
 
-})
+
 
     //command server
-NooBot.on('message', message =>
-{
+
     if(message.content.startsWith(BotPfx + 'server')) 
     {
         if (!message.guild.member(NooBot.user).hasPermission('SEND_MESSAGES')) return message.guild.owner.send(`Je n'ai pas la permission de parler sur ${message.guild.name}`)
@@ -107,12 +139,10 @@ NooBot.on('message', message =>
             .addField("Nombres de personnes : " + server_size, "////////////////////////")
         message.channel.send(ServerEmbed)
     }
-})
     
 
     //command bonjour
-NooBot.on('message', message =>
-{
+
     if (message.content.startsWith(BotPfx + 'bonjour'))
     {
         if (!message.guild.member(NooBot.user).hasPermission('SEND_MESSAGES')) return message.guild.owner.send(`Je n'ai pas la permission de parler sur ${message.guild.name}`)
@@ -128,24 +158,17 @@ NooBot.on('message', message =>
         else
         {
             message.delete(100)
-            message.author.send('Je te souhaite le bonjour')
+            message.author.send('Je te souhaite le bonjour').catch((err) =>
+            {
+                message.reply(":warning: Je peux pas t'envoyer toutes mes commands tu dois activé les messages privés provenant de membres de serveurs dans tes paramètres :warning:")
+            })
         }
    
     }
-})
 
-NooBot.on('message', message =>
 
-{
-    if (message.content === reactPfx) 
-    {
-        message.react('😍');
-    }
-})
+    // commande info
 
-NooBot.on('message', message =>
-
-{
     if (message.content.startsWith(BotPfx + 'info'))
     {
         if (!message.guild.member(NooBot.user).hasPermission('SEND_MESSAGES')) return message.guild.owner.send(`Je n'ai pas la permission de parler sur ${message.guild.name}`)
@@ -158,13 +181,10 @@ NooBot.on('message', message =>
         message.channel.send(InfoEmbed)
     
     }
-})
+
 
     
     //Command Avatar
-NooBot.on('message', message =>
-{
-    
 
     if (message.content.startsWith(BotPfx + 'avatar'))
     {
@@ -183,6 +203,11 @@ NooBot.on('message', message =>
         {
         let ImgAvtr = message.author.avatarURL
         let user = message.author
+
+        let AvtrEmbedComfrim = new Discord.RichEmbed()
+            .setTitle("Votre Avatar a été envoyer dans vos message privé, en plus il est cool ^^")
+            .setColor("#fe09d5")
+
         let AvtrEmbed = new Discord.RichEmbed()
             .setTitle("Votre Avatar :")
             .setAuthor(`${user.username}`, user.displayAvatarURL)
@@ -190,30 +215,28 @@ NooBot.on('message', message =>
             .setURL(ImgAvtr)
             .setColor("#fe09d5")
             .setImage(ImgAvtr)
-        message.author.send(AvtrEmbed)
-        
-        let AvtrEmbedComfrim = new Discord.RichEmbed()
-            .setTitle("Votre Avatar a été envoyer dans vos message privé, en plus il est cool ^^")
-            .setColor("#fe09d5")
         message.delete(100)
-        message.reply(AvtrEmbedComfrim)
+        message.author.send(AvtrEmbed)
+            .catch((err) =>
+        {
+            message.reply(":warning: Je peux pas t'envoyer toutes mes commands tu dois activé les messages privés provenant de membres de serveurs dans tes paramètres :warning:")
+        })
+        
+        
                 
         }
     }
-})
+
        
     
-    //command sondage
-NooBot.on('message', message =>
-{
-    
-
+    //command sondage 
 
     if (message.content.startsWith(BotPfx + 'sondage')) 
     {
         if (!message.guild.member(NooBot.user).hasPermission('SEND_MESSAGES')) return message.guild.owner.send(`Je n'ai pas la permission de parler sur ${message.guild.name}`)
+        if (!message.guild.member(NooBot.user).hasPermission('MANAGE_EMOJIS')) return message.guild.owner.send(`Je n'ai pas la permission d'utiliser les emojis sur ${message.guild.name}`)
 
-        if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("Vous n'avez pas la permission");     
+  
         let msgsondage = message.content.split(" ");
             let questsondage = msgsondage.slice(1)        
             let tte = questsondage.join(" ")
@@ -236,40 +259,6 @@ NooBot.on('message', message =>
         }
     
 })
-
-NooBot.on('message', message =>
-{
-    
-
-    if(message.content.startsWith(BotPfx + "clear"))
-    {
-        if (!message.guild.member(NooBot.user).hasPermission('SEND_MESSAGES')) return message.guild.owner.send(`Je n'ai pas la permission de parler sur ${message.guild.name}`)
-        
-        if(!message.guild.member(message.author).hasPermission("MANAGE_MESSAGES"))
-        {
-            let user = message.author
-            message.delete('100')
-            message.author.send(`Tu n'as pas la permission du *clear sur ${message.guild.name}`)
-            message.guild.owner.send(`${user.username} a fais la commande *clear`)
-        }
-        else
-        {
-            let NumMsgClear = message.content.split(" ").splice(1)
-            
-            if(!NumMsgClear[0])
-            {
-                
-                message.channel.send("Tu dois préciser le num de méssage à supprimer !")
-                message.channel.bulkDelete(NumMsgClear[0]).then(() =>
-                message.author.send(`${NumMsgClear[0]} messages ont été supprimés !`))
-                
-            }
-        }
-    }
-})
-    
-        
-
 
 
 NooBot.login(process.env.TOKEN)
