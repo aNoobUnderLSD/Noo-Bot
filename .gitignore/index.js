@@ -52,34 +52,50 @@ NooBot.on("guildMemberAdd", member =>
 NooBot.on("message", message => 
 {
     //anti @everyone
-    if(message.content.startsWith('@everyone'))
+    if(message.content.startsWith('*test'))
     {
-        if (!message.guild.member(NooBot.user).hasPermission('MANAGE_MESSAGES'))
+                
+        if(!message.member.hasPermission("ADMINISTRATOR"))
         {
-            message.guild.owner.send(`Je n'ai pas la permission de gérer les messages sur ${message.guild.name} car ${message.author} a fait un @here`)
+            if (!message.guild.member(NooBot.user).hasPermission('MANAGE_MESSAGES'))
+            {
+                message.guild.owner.send(`Je n'ai pas la permission de gérer les messages sur ${message.guild.name} car ${message.author} a fait un @here`)
+            }
+            else
+            {
+                message.delete(100)
+                message.guild.owner.send(`${message.author} à fais un @everyone sur ${message.guild.name}`)
+                message.author.send(`Tu n'as pas le droit de faire des @everyone sur ${message.guild.name}`)
+                console.log(`le @everyone à été supprimer de ${message.author} sur ${message.guild.name}`)
+            }
         }
         else
         {
-            message.delete(100)
-            message.guild.owner.send(`${message.author} à fais un @everyone sur ${message.guild.name}`)
-            message.author.send(`Tu n'as pas le droit de faire des @everyone sur ${message.guild.name}`)
-            console.log(`le @everyone à été supprimer de ${message.author} sur ${message.guild.name}`)
+            message.author.send(`Je te conseil de pas trop abuser sur les @everyone ou @here car les membres peuvent n'aime pas trop.`)
         }
+
     }
 
     //anti @here
     if(message.content.startsWith('@here'))
     {
-        if (!message.guild.member(NooBot.user).hasPermission('MANAGE_MESSAGES'))
+        if(!message.member.hasPermission("ADMINISTRATOR"))
         {
-            message.guild.owner.send(`Je n'ai pas la permission de gérer les messages sur ${message.guild.name} car ${message.author} a fait un @here`)
+            if (!message.guild.member(NooBot.user).hasPermission('MANAGE_MESSAGES'))
+            {
+                message.guild.owner.send(`Je n'ai pas la permission de gérer les messages sur ${message.guild.name} car ${message.author} a fait un @here`)
+            }
+            else
+            {
+                message.delete(100)
+                message.guild.owner.send(`${message.author} à fais un @here sur ${message.guild.name}`)
+                message.author.send(`Tu n'as pas le droit de faire des @here sur ${message.guild.name}`)
+                console.log(`le @here à été supprimer de ${message.author} sur ${message.guild.name}`)
+            }
         }
         else
         {
-            message.delete(100)
-            message.guild.owner.send(`${message.author} à fais un @here sur ${message.guild.name}`)
-            message.author.send(`Tu n'as pas le droit de faire des @here sur ${message.guild.name}`)
-            console.log(`le @here à été supprimer de ${message.author} sur ${message.guild.name}`)
+            message.author.send(`Je te conseil de pas trop abuser sur les @everyone ou @here car les membres peuvent n'aime pas trop.`)
         }
     }
 
